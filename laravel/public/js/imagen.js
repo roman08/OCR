@@ -61,7 +61,13 @@ image.cropper('getCroppedCanvas').toBlob(function (blob) {
     var formData = new FormData();
     formData.append('croppedImage', blob);
     var imgcorte = $('#imagen2').val();
-    //console.log(imgcorte);
+    var destino = $('#opciones').val();
+    if(destino == '')
+    {
+        alert('Seleccione una opción de destino por favor.');
+        return false;
+    }
+    console.log(destino);
       $.ajax('/convertir/texto', {
     method: "POST",
     data:  {'imgcorte' : imgcorte}, 
@@ -69,9 +75,14 @@ image.cropper('getCroppedCanvas').toBlob(function (blob) {
     //    processData: false,
     //contentType: false,
     success: function (data) {
+        if(data == '')
+        {
+            $('#alert').append("<div class='alert alert-danger'>No se obtuvo ningun resultado, revise el area seleccionada e intente de nievo por favor!! </div>");
+        }
         $.each( data, function( key, value ) {
             array.push(value);
-            $('#resultado').append("<span style='font-size: 20px;'>"+ value +"</br></span>");
+           //$('#resultado').append("<span style='font-size: 20px;'>"+ value +"</br></span>");
+            $('#'+destino).val(value);
    console.log( value );
 });
      
